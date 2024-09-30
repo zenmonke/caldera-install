@@ -4,6 +4,6 @@ Run from a directory like home that doesn't need sudo privileges for the easiest
 
 Usage: ./Caldera-Install.sh <Server-IP>
 
-and that's it! 
+You'll be prompted for your sudo password and then that's it! 
 
 (This is my very first public Bash script I've written, due to needing to use Caldera in my current role. The Caldera team's instructions on Github are way too simple and lots of workarounds are needed in order to make it work. After lots of headaches and troubleshooting, this script looked to simplify this!)
