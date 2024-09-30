@@ -1,4 +1,5 @@
 #!/bin/bash
+SERVER_IP=$1
 
 # Function to display a progress bar instead outputting lots of data
 show_progress() {
@@ -16,7 +17,7 @@ show_progress() {
 }
 
 # Check if the IP address argument is supplied
-if [ -z "$1" ]; then
+if [ -z "$SERVER_IP" ]; then
     echo "Error: No server IP address supplied."
     echo "Usage: $0 <SERVER-IP>"
     exit 1
@@ -98,13 +99,13 @@ NPM_PID=$!
 show_progress $NPM_PID
 
 # Step 8: Update conf/local.yml
-echo "Updating config files with $1..."
-sed -i "s|^\s*app.contact.http:.*|app.contact.http: http://$1:8888|g" conf/local.yml
-sed -i "s|^\s*app.frontend.api_base_url:.*|app.frontend.api_base_url: http://$1:8888|g" conf/local.yml
+echo "Updating config files with $SERVER_IP..."
+sed -i "s|^\s*app.contact.http:.*|app.contact.http: http://$SERVER_IP:8888|g" conf/local.yml
+sed -i "s|^\s*app.frontend.api_base_url:.*|app.frontend.api_base_url: http://$SERVER_IP:8888|g" conf/local.yml
 
 # Step 9: Update plugins/magma/.env
-echo "Updating more config files with $1..."
-sed -i "s|http://localhost:8888|http://$1:8888|g" plugins/magma/.env
+echo "Updating more config files with $SERVER_IP..."
+sed -i "s|http://localhost:8888|http://$SERVER_IP:8888|g" plugins/magma/.env
 echo
 
 # Step 10: Rebuild and start the server
