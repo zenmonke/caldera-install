@@ -2,7 +2,7 @@ This is a bash script to install a copy of the Caldera (https://github.com/mitre
 
 Run from a directory like home that doesn't need sudo privileges for the easiest time. Server IP needs to be supplied for the script, this will be the IP address of the machine you are running the Caldera server from. 
 
-Usage: ./Caldera-Install.sh <Server-IP>
+Usage: ./Caldera-Install.sh [Server-IP]
 
 You'll be prompted for your sudo password and then that's it! 
 
