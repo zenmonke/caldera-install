@@ -35,8 +35,10 @@ if [ "$NODE_INSTALLED" != "y" ]; then
 fi
 echo
 # Step 2: Install Golang
-echo "Installing Golang.."
+echo 'Prompting for sudo password if needed...'
+echo
 sudo -v
+echo "Installing Golang..."
 sudo apt install -y golang > /dev/null 2>&1 &
 GoLang_PID=$!
 show_progress $GoLang_PID
@@ -50,7 +52,16 @@ show_progress $Caldera_PID
 # Step 4: Navigate to the Caldera directory
 cd caldera || exit
 
-# Step 5: Install Python dependencies
+# Step 5: Ensure pip3 installed, then install Python dependencies
+if ! command -v pip3 &> /dev/null; then
+    echo "Check for pip3 failed, installing..."
+    sudo apt install -y python3-pip > /dev/null 2>&1 &
+    pip3_PID=$!
+    show_progress $npm_PID
+else
+    : #Do nothing
+fi
+
 echo "Installing Python dependencies..."
 pip3 install -r requirements.txt > /dev/null 2>&1 &
 PIP_PID=$!
@@ -59,13 +70,10 @@ show_progress $PIP_PID
 # Step 6: Build Caldera server, run it, then kill it automatically
 echo "Building Caldera server and waiting for 'all systems ready' message (takes about 60-90 seconds)..."
 python3 server.py --build > /dev/null 2>&1 &
-
-# Get the server process ID (PID)
 SERVER_PID=$!
 
-# Check for the open port to know when the server is ready-
-# Loop to check if port 8888 is open (replace with your actual port if different)
-while ! nc -z localhost 8888; do
+# Check for the open port to know when the server is ready-Loop to check if port 8888 is open (replace with your actual port if different)
+while ! timeout 1 bash -c "</dev/tcp/$SERVER_IP/8888" &> /dev/null; do
     sleep 1  # Wait for 1 second before checking again
 done
 
@@ -116,7 +124,7 @@ python3 server.py --build --fresh > /dev/null 2>&1 &
 SERVER_PID=$!
 
 # Check for the open port to know when the server is ready, which loops to check if port 8888 is open
-while ! nc -z localhost 8888; do
+while ! timeout 1 bash -c "</dev/tcp/$SERVER_IP/8888" &> /dev/null; do
     sleep 1  # Wait for 1 second before checking again
 done
 
@@ -139,13 +147,13 @@ if pgrep -f "python3 server.py"; then
     echo "Some server.py processes are still running. Forcefully terminating them..."
     pkill -9 -f "python3 server.py"
 fi
-
 echo "Caldera server stopped successfully."
 echo
-
+echo -e "\033[31m>>===[:: CALDERA IS NOW LOCKED, LOADED, AND READY TO LAUNCH! ::]===<<\033[0m"
+echo
 # Step 11: Display the local.yml file for credentials
-echo -e "\033[31mDisplaying credentials- \033[0m"
+echo "Displaying credentials-"
 echo
-tail -n 4 conf/local.yml
+tail conf/local.yml | sed -n '8p;10p'
 echo
-echo -e "Caldera installation and configuration completed! Now you can run \033[33mpython3 server.py\033[0m from the caldera directory."
+echo -e "Now you can run \033[33mpython3 server.py\033[0m from the caldera directory."
