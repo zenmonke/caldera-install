@@ -149,6 +149,7 @@ sed -i "s|^\s*app.contact.http:.*|app.contact.http: http://$SERVER_IP:8888|g" co
 sed -i "s|^\s*app.frontend.api_base_url:.*|app.frontend.api_base_url: http://$SERVER_IP:8888|g" conf/local.yml
 
 # Step 10: Update plugins/magma/.env
+#This step is throwing an error from sed now, do not see plugins/magma/.env after installation since last version update. Script continues without issue though, may remove once verified do not need.  
 echo "Updating more config files with $SERVER_IP..."
 sed -i "s|http://localhost:8888|http://$SERVER_IP:8888|g" plugins/magma/.env
 echo
@@ -193,7 +194,7 @@ echo "Displaying credentials, saved to caldera/credentials.txt-"
 echo
 grep -E '^\s*(red|blue):' conf/local.yml | tee credentials.txt
 echo
-echo -e "Ensure python virtual environment 'venv' is activated from the Caldera directory by running \033[33msource venv/bin/activate\033[0m, and then run \033[33mpython server.py\033[0m"
+echo -e "Now just navigate to the Caldera directory, activate the Python virtual environment with  \033[33msource venv/bin/activate\033[0m, and then run \033[33mpython server.py\033[0m"
 
 #deactivate python virtual environment
 deactivate
