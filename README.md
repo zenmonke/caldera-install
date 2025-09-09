@@ -20,7 +20,7 @@ Python3.11 (Simple script to build from source - https://github.com/cmurphy06/Re
 
 ## Usage:
 ```
-./Caldera-Install.sh [SERVER_IP]
+./setup.sh [SERVER_IP]
 ```
 For best results, run the script from a directory that does not require elevated privileges. You’ll also need to provide the server IP address - this should be the IP of the machine this script is running from.
 
