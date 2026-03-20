@@ -1,5 +1,7 @@
 # Inferno-Builder
 
+(Note: this project has been archived, as I have moved on from the position that that I was utilizing Caldera on a regular basis)
+
 This is a bash script to install Mitre Caldera ([https://github.com/mitre/caldera](https://github.com/mitre/caldera)) server locally on Kali Linux. While the official Caldera installation instructions on GitHub are minimal, they often require additional workarounds and troubleshooting. This script was designed to streamline the setup process and reduce the complexity involved.
 
 ## Prerequisites:
